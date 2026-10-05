@@ -2,6 +2,7 @@ package montgomery
 
 import (
 	"fmt"
+	"reflect"
 
 	"github.com/ChainsAre2Tight/smpvzib-labs/lab-1_montgomery/mpi"
 )
@@ -40,6 +41,15 @@ type Montgomery struct {
 }
 
 func NewMontgomery(N mpi.MPI) (*Montgomery, error) {
+
+	_, _, d, err := mpi.ExtendedGCD(N, mpi.FromZnBaseB(uint64(N.B), N.B))
+	if err != nil {
+		return nil, fmt.Errorf("NewMontgomery: ExtendedGCD: %s", err)
+	}
+	if !reflect.DeepEqual(d.Trim().V, []int64{1}) {
+		return nil, fmt.Errorf("NewMontgomery: bad modulo: N is not coprime with radix")
+	}
+
 	R := mpi.MPI{
 		B: N.B,
 		V: make([]int64, len(N.V)+1),

@@ -38,6 +38,29 @@ func TestNewMontgomeryRdashed(t *testing.T) {
 	}
 }
 
+func TestNewMontgomeryCoprimeCheck(t *testing.T) {
+	tt := []struct {
+		N        uint64
+		radix    uint32
+		expected bool
+	}{
+		{2011, 10, true},
+		{2010, 10, false},
+	}
+
+	for _, td := range tt {
+		t.Run(
+			fmt.Sprintf("%d base %d - %v", td.N, td.radix, td.expected),
+			func(t *testing.T) {
+				_, err := montgomery.NewMontgomery(mpi.FromZnBaseB(td.N, td.radix))
+				if td.expected != (err == nil) || !td.expected && err != nil && err.Error() != "NewMontgomery: bad modulo: N is not coprime with radix" {
+					t.Fatalf("\nWrong state:\nExpected error:%v\nGot:%s", td.expected, err)
+				}
+			},
+		)
+	}
+}
+
 func TestRedc(t *testing.T) {
 	tt := []struct {
 		name string

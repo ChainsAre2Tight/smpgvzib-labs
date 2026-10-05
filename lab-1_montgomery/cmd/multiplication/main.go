@@ -26,7 +26,7 @@ func main() {
 		fmt.Println("Invalid B")
 		return
 	}
-	fmt.Printf("Input N in base-%d:\n", radix)
+	fmt.Printf("Input N in base-%d so that it is co-prime with radix:\n", radix)
 	var n int64
 	fmt.Scanf("%d", &n)
 	if n < 0 {

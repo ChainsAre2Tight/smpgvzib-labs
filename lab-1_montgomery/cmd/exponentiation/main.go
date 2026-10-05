@@ -10,7 +10,8 @@ import (
 
 func main() {
 	fmt.Println("This program performs exponentiation of a multi-precision integer via Montgomery multiplication")
-	fmt.Println("A * c mod N")
+	fmt.Println("A ^ c mod N")
+	fmt.Println("Beware that large numbers might overflow Expected result field at the end as it uses direct int64 computations")
 	fmt.Println("STD input is supported for radix 10")
 	radix := 10
 	fmt.Printf("Input A in base-%d:\n", radix)
@@ -27,7 +28,7 @@ func main() {
 		fmt.Println("Invalid c")
 		return
 	}
-	fmt.Printf("Input N in base-%d:\n", radix)
+	fmt.Printf("Input N in base-%d so that it is co-prime with radix:\n", radix)
 	var n int64
 	fmt.Scanf("%d", &n)
 	if n < 0 {
